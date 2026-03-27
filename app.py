@@ -1,22 +1,12 @@
-from flask import Flask, request, jsonify
-from dotenv import load_dotenv
-import os
-import openai
-import random
-import re
-import logging
-import jwt
-import datetime
-
-load_dotenv()
+# app.py
+from flask import Flask
 
 app = Flask(__name__)
 
+@app.route("/")
+def home():
+    return "<h1>Flask App is Running in Docker!</h1>"
 
-@app.route('/status2', methods=['GET'])
-def status():
-    return jsonify({'status': 'ON'})
-
-if __name__ == '__main__':
-    app.run(port=8080)
-    app.run(debug=True)
+if __name__ == "__main__":
+    # Ensure the app runs on 0.0.0.0 to be accessible within a container
+    app.run(host="0.0.0.0", port=8080)
