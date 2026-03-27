@@ -1,0 +1,88 @@
+
+HA K8S 
+
+Utilizar PVC y PV ( si en caso los deployments fallan la informacion perdurara)
+
+
+Se necesita escalar un deployment usando HPA  con minimo y maximo numero de replicas ademas de agregar politicas de escalado vertical
+en aplicacion productivas debido al alto consudmo del recurso de memoria 
+
+el pod unico no scalaba y se reiniciaba constanmente OOMKilled 
+
+Mecanismos implmeentados un cronjob a nivel del servidor que  reiniciaba el pod automaticamente cada hora 
+
+implementar HPA y Reglas de escalamiento vertical ademas de KEDA para los eventos de colas de rabbitmq 
+
+Mayor estabilidad en la aplicacion y menores ticket de incidentes 
+
+
+
+
+AZURE DEVOPS
+
+Azure devops Pipelines 
+
+Se uitlizaba los agentes por defecto que nos brindaba ADO y solo una ocasion se usaron self-hoted
+
+utilice Mend.io y aquasecurity para la parte del escaneo de vulenrabilidades
+
+utilizar tareas pre creadas de azure devops para la compilacion y azure deovps feeds para el manejo de artefactos 
+
+se tenia sonarcloud una subscripcion y se usaba la tarea ADO de sonar para enviar scaneos 
+
+una vez se tenia el artefacto se actualizaba el manifeisto de deployment con la nueva version de la imagen con comandos set y se aplicaba el cambio con apply en algunos casos se abstrayo la logica para usar helm/argocd para el despliegue continuo 
+
+
+Para llegar a produccion se corria un step alterno para mover la imagen del registry de dev/qa hacia el registry de produccion 
+
+y ademas se usaban release pipelines en vez de biuld pipelines para desplegar hacia produccion por los aprobadores que se tneia en cada enviornments de ADO ( apobaores manuales)  en el release pipelines se tenia en secuencia los despliegues de todo los ambinetes
+
+
+validar que la imagen este en el reigstry de produccion , aprobaciones de gerentes y versiones de reversion listas 
+
+
+
+Analaisis de manifestos kubernetes 
+
+Deployment 
+
+genera replicaest que buscan agrupar pods en base a un numero de replicas deseada 
+
+generalmente itnen 2 contenedores uno para la aplicacion y otro para fluenbit que exporta los logs del contenedor de la aplicacion 
+hacia una herramienta externa como datadog
+
+recursos en la section de resources del manifiesto como limit y request  vriables de entorno usando el flag de --build-args de docker y tambien usando secretos y confirmgaps  volumenes como PV Y PVC para  los servidios statefulsets
+
+tipo de service uitlizado LoadBalancer
+service exporta el pod desde el punto  se utiliza para la comunicacion interna (  nombredelservicio.namespace.svc.cluster.local) y tambien externa con el ingress 
+
+
+expone los puertos de lso endpoints  y redirigue a los contenedores de la aplicacion usando etiquetas 
+
+se relacionan por los labels y se validan si es que existe los endpoints 
+
+
+Como funciona el ingress 
+    redirige el trafico hacia el service y se le puede agregar certificados y puede esr utilizado en https
+   por cada ruta redirigue hacia un servicio 
+
+el trafico desde le exterior llega por el framework de nginx controller y lo deriva hacia los servidios y los servicios lo derivan hacia los deployments
+
+
+solo se espifica un host que tiene que ser un DNS creado en el servidio de DNS y depende de cada endpoint de la aplicacion para derivarlo  path /service va al servicio de service
+
+empieza con la peticion del navegador hacia el host que esta registrado en el ingress y por el path se hace la derivacion al servicio que derivara al deployment y subisguiente cotneendor 
+
+
+si un pod cae y esta bajo un deployment uno nueva nace pero si no estoy bajo un deployment se eliminara el pod definitvamente
+
+si un nodo de ja de etar disponible posiblemnte todo los pods que vivian en ese nodo pasaran a un estado de Pending y buscaran otro nodo donde colocarse
+
+
+
+
+
+
+
+
+
