@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app
 
 # Instala las dependencias necesarias especificadas en requirements.txt
-#RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # Hacer que el puerto 8080 esté disponible para el mundo fuera de este contenedor
 EXPOSE 8080
