@@ -18,4 +18,5 @@ def status():
     return jsonify({'status': 'ON'})
 
 if __name__ == '__main__':
+    app.run(port=8080)
     app.run(debug=True)
