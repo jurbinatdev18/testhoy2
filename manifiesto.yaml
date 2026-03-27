@@ -1,3 +1,11 @@
+Prueba 2 – Kubernetes Deployment (debugging)
+Actividades:
+- Detectar y corregir los errores del siguiente manifiesto
+- Agregar réplicas
+- Mejorar el Deployment aplicando buenas prácticas
+Problema:
+
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,6 +30,14 @@ spec:
     command: ["python"]
     args: ["app.py"]
 
+
+
+Prueba 3: Crear un service de tipo NodePort para exponer el
+Deployment anterior.
+Objetivo:
+Evaluar si el postulante entiende cómo exponer aplicaciones en Kubernetes.
+Enunciado:
+Crea un Service de tipo NodePort para exponer la aplicación del Deployment anterior.
 ---
 
 apiVersion: v1
