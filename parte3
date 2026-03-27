@@ -57,9 +57,26 @@ y ademas se usaban release pipelines en vez de biuld pipelines para desplegar ha
 validar que la imagen este en el reigstry de produccion , aprobaciones de gerentes y versiones de reversion listas 
 
 
+Prueba 6: Análisis de Manifiestos Kubernetes
+Actividades:
+Revisa los manifiestos y describe, con tus propias palabras:
+1. Qué hace el Deployment
+- Qué aplicación despliega
+- Cuántos contenedores tiene el Pod y qué rol cumple cada uno
+- Cómo se manejan recursos, variables de entorno y volúmenes
+2. Cómo funciona el Service
+- Tipo de Service utilizado
+- Qué puertos expone y a qué contenedores redirige el tráfico
+- Cómo se relaciona con el Deployment
+3. Cómo funciona el Ingres
+
 
 Analaisis de manifestos kubernetes 
 
+1. Qué hace el Deployment
+- Qué aplicación despliega
+- Cuántos contenedores tiene el Pod y qué rol cumple cada uno
+- Cómo se manejan recursos, variables de entorno y volúmenes
 Deployment 
 
 genera replicaest que buscan agrupar pods en base a un numero de replicas deseada 
@@ -69,6 +86,11 @@ hacia una herramienta externa como datadog
 
 recursos en la section de resources del manifiesto como limit y request  vriables de entorno usando el flag de --build-args de docker y tambien usando secretos y confirmgaps  volumenes como PV Y PVC para  los servidios statefulsets
 
+
+2. Cómo funciona el Service
+- Tipo de Service utilizado
+- Qué puertos expone y a qué contenedores redirige el tráfico
+- Cómo se relaciona con el Deployment
 tipo de service uitlizado LoadBalancer
 service exporta el pod desde el punto  se utiliza para la comunicacion interna (  nombredelservicio.namespace.svc.cluster.local) y tambien externa con el ingress 
 
@@ -78,15 +100,26 @@ expone los puertos de lso endpoints  y redirigue a los contenedores de la aplica
 se relacionan por los labels y se validan si es que existe los endpoints 
 
 
+3. Cómo funciona el Ingress
 Como funciona el ingress 
     redirige el trafico hacia el service y se le puede agregar certificados y puede esr utilizado en https
    por cada ruta redirigue hacia un servicio 
 
+
+- Cómo llega el tráfico desde el exterior
+- Qué host y paths están configurados
+- Cómo se enruta la petición hacia el Service
 el trafico desde le exterior llega por el framework de nginx controller y lo deriva hacia los servidios y los servicios lo derivan hacia los deployments
 
 
 solo se espifica un host que tiene que ser un DNS creado en el servidio de DNS y depende de cada endpoint de la aplicacion para derivarlo  path /service va al servicio de service
 
+
+4. Flujo completo de la aplicación
+- Describe el recorrido de una petición HTTP desde el navegador hasta el contenedor
+5. Escenarios operativos
+- ¿Qué sucede si un Pod se cae?
+- ¿Qué sucede si un nodo deja de estar disponible
 empieza con la peticion del navegador hacia el host que esta registrado en el ingress y por el path se hace la derivacion al servicio que derivara al deployment y subisguiente cotneendor 
 
 
